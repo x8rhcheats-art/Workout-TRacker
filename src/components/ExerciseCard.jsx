@@ -38,9 +38,10 @@ export default function ExerciseCard({ exercise, onLog, onLevelUp }) {
         {!!exercise.is_compound && <span className="badge badge-rust">+5</span>}
       </div>
 
-      <div style={{ display: 'flex', alignItems: 'baseline' }}>
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 4 }}>
         <span className={`ex-weight${showLv ? ' lv' : ''}`}>{exercise.current_weight}</span>
         <span className="ex-unit">{exercise.unit}</span>
+        <span className="ex-unit" style={{ marginLeft: 6 }}>× {exercise.rep_target}</span>
       </div>
 
       {displayLastReps !== undefined && displayLastReps !== null && (
