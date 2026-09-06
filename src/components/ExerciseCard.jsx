@@ -42,11 +42,9 @@ export default function ExerciseCard({ exercise, onLog, onLevelUp, setsDone = 0 
         <span className={`ex-weight${showLv ? ' lv' : ''}`}>{exercise.current_weight}</span>
         <span className="ex-unit">{exercise.unit}</span>
         <span className="ex-unit" style={{ marginLeft: 6 }}>× {exercise.rep_target}</span>
-        {setsDone > 0 && (
-          <span className="ex-unit" style={{ marginLeft: 'auto', fontSize: '1rem', color: 'var(--gold)' }}>
-            {setsDone} set{setsDone !== 1 ? 's' : ''}
-          </span>
-        )}
+        <span className="ex-unit" style={{ marginLeft: 'auto', fontSize: '1rem', color: setsDone >= (exercise.sets_target || 3) ? 'var(--gold)' : 'var(--text-muted)' }}>
+          {setsDone}/{exercise.sets_target || 3} sets
+        </span>
       </div>
 
       {displayLastReps !== undefined && displayLastReps !== null && (

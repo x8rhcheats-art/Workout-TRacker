@@ -4,28 +4,29 @@ import { one, run } from '../db.js'
 const router = Router()
 
 router.post('/', async (req, res) => {
-  const { split_id, name, current_weight = 0, unit = 'kg', rep_target = 10, is_compound = false } = req.body
+  const { split_id, name, current_weight = 0, unit = 'kg', rep_target = 10, sets_target = 3, is_compound = false } = req.body
   if (!split_id || !name?.trim()) return res.status(400).json({ error: 'split_id and name required' })
   const maxOrder = await one('SELECT MAX(sort_order) AS m FROM exercises WHERE split_id = $1', [split_id])
   const sort_order = (maxOrder?.m || 0) + 1
   const row = await one(
-    'INSERT INTO exercises (split_id, name, current_weight, unit, rep_target, sort_order, is_compound) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING id',
-    [split_id, name.trim(), current_weight, unit, rep_target, sort_order, !!is_compound]
+    'INSERT INTO exercises (split_id, name, current_weight, unit, rep_target, sets_target, sort_order, is_compound) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING id',
+    [split_id, name.trim(), current_weight, unit, rep_target, sets_target, sort_order, !!is_compound]
   )
-  res.json({ id: row.id, split_id, name: name.trim(), current_weight, unit, rep_target, sort_order, is_compound: !!is_compound })
+  res.json({ id: row.id, split_id, name: name.trim(), current_weight, unit, rep_target, sets_target, sort_order, is_compound: !!is_compound })
 })
 
 router.patch('/:id', async (req, res) => {
   const ex = await one('SELECT * FROM exercises WHERE id = $1', [req.params.id])
   if (!ex) return res.status(404).json({ error: 'Not found' })
-  const { name, current_weight, unit, rep_target, is_compound } = req.body
+  const { name, current_weight, unit, rep_target, sets_target, is_compound } = req.body
   await run(
-    'UPDATE exercises SET name=$1, current_weight=$2, unit=$3, rep_target=$4, is_compound=$5 WHERE id=$6',
+    'UPDATE exercises SET name=$1, current_weight=$2, unit=$3, rep_target=$4, sets_target=$5, is_compound=$6 WHERE id=$7',
     [
       name ?? ex.name,
       current_weight ?? ex.current_weight,
       unit ?? ex.unit,
       rep_target ?? ex.rep_target,
+      sets_target ?? ex.sets_target ?? 3,
       is_compound !== undefined ? !!is_compound : ex.is_compound,
       req.params.id
     ]

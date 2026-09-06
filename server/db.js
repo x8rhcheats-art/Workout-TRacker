@@ -23,7 +23,8 @@ const SCHEMA = `
     unit TEXT DEFAULT 'kg',
     rep_target INTEGER DEFAULT 10,
     sort_order INTEGER DEFAULT 0,
-    is_compound BOOLEAN DEFAULT FALSE
+    is_compound BOOLEAN DEFAULT FALSE,
+    sets_target INTEGER DEFAULT 3
   );
   CREATE TABLE IF NOT EXISTS logged_sets (
     id SERIAL PRIMARY KEY,
@@ -48,6 +49,7 @@ const SCHEMA = `
 
 export async function initDB() {
   await pool.query(SCHEMA)
+  await pool.query(`ALTER TABLE exercises ADD COLUMN IF NOT EXISTS sets_target INTEGER DEFAULT 3`)
   const { rows } = await pool.query('SELECT COUNT(*) AS c FROM splits')
   if (parseInt(rows[0].c) === 0) await seed()
 }

@@ -227,6 +227,7 @@ function ExerciseModal({ data, splitId, onSave, onClose }) {
     current_weight: data?.current_weight ?? 0,
     unit: data?.unit || 'kg',
     rep_target: data?.rep_target ?? 10,
+    sets_target: data?.sets_target ?? 3,
     is_compound: !!data?.is_compound,
     split_id: splitId
   })
@@ -238,6 +239,7 @@ function ExerciseModal({ data, splitId, onSave, onClose }) {
       ...form,
       current_weight: parseFloat(form.current_weight) || 0,
       rep_target: parseInt(form.rep_target) || 10,
+      sets_target: parseInt(form.sets_target) || 3,
       ...(data?.id ? { id: data.id } : {})
     })
   }
@@ -267,10 +269,17 @@ function ExerciseModal({ data, splitId, onSave, onClose }) {
           </div>
         </div>
 
-        <div className="field">
-          <label className="field-label">Rep Target</label>
-          <input className="input" type="number" inputMode="numeric" value={form.rep_target}
-            onChange={e => set('rep_target', e.target.value)} />
+        <div className="field-row">
+          <div className="field" style={{ flex: 1 }}>
+            <label className="field-label">Rep Target</label>
+            <input className="input" type="number" inputMode="numeric" value={form.rep_target}
+              onChange={e => set('rep_target', e.target.value)} />
+          </div>
+          <div className="field" style={{ flex: 1 }}>
+            <label className="field-label">Sets Target</label>
+            <input className="input" type="number" inputMode="numeric" value={form.sets_target}
+              onChange={e => set('sets_target', e.target.value)} />
+          </div>
         </div>
 
         <div className="toggle-row">
