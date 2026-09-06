@@ -3,8 +3,10 @@ import ExerciseCard from './ExerciseCard.jsx'
 
 export default function WorkoutSession({ split, onEnd }) {
   const [exercises, setExercises] = useState(split.exercises || [])
+  const [setCounts, setSetCounts] = useState({})
 
   const handleLog = async (exerciseId, reps) => {
+    setSetCounts(prev => ({ ...prev, [exerciseId]: (prev[exerciseId] || 0) + 1 }))
     const res = await fetch(`/api/exercises/${exerciseId}/log`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -50,6 +52,7 @@ export default function WorkoutSession({ split, onEnd }) {
           exercise={ex}
           onLog={handleLog}
           onLevelUp={handleLevelUp}
+          setsDone={setCounts[ex.id] || 0}
         />
       ))}
     </div>

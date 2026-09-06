@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-export default function ExerciseCard({ exercise, onLog, onLevelUp }) {
+export default function ExerciseCard({ exercise, onLog, onLevelUp, setsDone = 0 }) {
   const [reps, setReps] = useState('')
   const [pending, setPending] = useState(null) // last log result
   const [busy, setBusy] = useState(false)
@@ -42,6 +42,11 @@ export default function ExerciseCard({ exercise, onLog, onLevelUp }) {
         <span className={`ex-weight${showLv ? ' lv' : ''}`}>{exercise.current_weight}</span>
         <span className="ex-unit">{exercise.unit}</span>
         <span className="ex-unit" style={{ marginLeft: 6 }}>× {exercise.rep_target}</span>
+        {setsDone > 0 && (
+          <span className="ex-unit" style={{ marginLeft: 'auto', fontSize: '1rem', color: 'var(--gold)' }}>
+            {setsDone} set{setsDone !== 1 ? 's' : ''}
+          </span>
+        )}
       </div>
 
       {displayLastReps !== undefined && displayLastReps !== null && (
