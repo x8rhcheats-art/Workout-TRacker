@@ -133,7 +133,7 @@ export default function EditPlan({ onBack, userName, onNameChange }) {
                         {ex.name}
                         {!!ex.is_compound && <span style={{ color: 'var(--rust)', fontSize: 11, marginLeft: 6 }}>compound</span>}
                       </div>
-                      <span className="ex-row-wt">{ex.current_weight}{ex.unit}</span>
+                      <span className="ex-row-wt">{ex.current_weight}{ex.unit} · {ex.sets_target || 3}×{ex.rep_target}</span>
                       <button className="btn btn-sm btn-secondary"
                         onClick={() => setModal({ type: 'exercise', data: ex, splitId: split.id })}>
                         Edit
